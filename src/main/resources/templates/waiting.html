@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <title>Pella</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css"/>
+    <script>
+        window.onload = function() {
+            websocket = new WebSocket("ws://" + window.location.host + "/ws");
+            websocket.onopen = (e) => onSocketOpen(e);
+            websocket.onclose = (e) => onSocketClose(e);
+            websocket.onmessage = (e) => onSocketMessage(e);
+            websocket.onerror = (e) => onSocketError(e);
+        }
+
+        function onSocketOpen(e) {
+            websocket.send(JSON.stringify({
+                type: "JOIN",
+                message: parseInt(sessionStorage.getItem("age")) <= 20 ? 0 : 1
+            }));
+        }
+
+        function onSocketClose(e) {
+            alert("서버와 통신을 할 수 없습니다. 처음부터 다시 시도해 주세요.");
+            window.location.href = "/";
+        }
+
+        function onSocketMessage(e) {
+            let message = JSON.parse(e.data);
+            console.log(message);
+            if (message.type == 'DATA') {
+                sessionStorage.setItem("room_id", message.roomId);
+                sessionStorage.setItem("topic_id", message.topicId);
+                window.location.href = "/chat"
+            }
+        }
+
+        function onSocketError(e) {
+            alert("서버와 통신을 할 수 없습니다. 처음부터 다시 시도해 주세요.");
+            window.location.href = "/";
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="go-back">종료</a>
+        </div>
+        <div class="waiting">
+            <img src="/img/loading.gif" width="250px"/>
+            <h2 style="color: #414141;">온 우주를 찾고 있습니다.</h2>
+            <p style="color: #adadad;">잠시만 기다려주세요.</p>
+        </div>
+    </div>
+</body>
+</html>

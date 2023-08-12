@@ -1,0 +1,22 @@
+server.servlet.encoding.force-response: true
+
+chat:
+  number-of-ages: 6
+  junior-in-each-room: 3
+  senior-in-each-room: 1
+
+topic:
+  number-of-topics: 6
+  topics:
+    - id: 0
+      topic: 상속세를 없애야 하는가?
+    - id: 1
+      topic: 대중교통의 노약자석을 늘려야 하는가?
+    - id: 2
+      topic: 자살은 정당화 할 수 있는가?
+    - id: 3
+      topic: 청소년에게 감형 처벌을 해야하는가?
+    - id: 4
+      topic: 인간은 태어날 때부터 선한가?
+    - id: 5
+      topic: 사형제도를 폐지해야 하는가?
