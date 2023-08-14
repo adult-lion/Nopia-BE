@@ -18,6 +18,7 @@ public class TopicProperty {
     private List<Topic> topics;
 
     public Topic getTopic(int topicId) {
+        System.out.println("topicId: "+(topicId-1));
         return topics.get(topicId - 1);
     }
 }

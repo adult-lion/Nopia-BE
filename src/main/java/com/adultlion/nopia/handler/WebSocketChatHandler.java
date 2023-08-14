@@ -1,5 +1,6 @@
 package com.adultlion.nopia.handler;
 
+import com.adultlion.nopia.config.WebSocketSessionManager;
 import com.adultlion.nopia.dto.RequestPacket;
 import com.adultlion.nopia.service.ChatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,11 +11,14 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.Serializable;
+
 @Component
 @RequiredArgsConstructor
-public class WebSocketChatHandler extends TextWebSocketHandler {
+public class WebSocketChatHandler extends TextWebSocketHandler implements Serializable {
     private final ObjectMapper mapper;
     private final ChatService service;
+    private final WebSocketSessionManager sessionManager;
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -36,6 +40,10 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) {
+        System.out.println("저장할 세션: " +session.getId());
+        sessionManager.saveSession(session.getId(),session);
         // 세션이 종료되면 실행
+        System.out.println("after에 들어온 세션 매니저: "+ sessionManager.getSession(session.getId()));
+      //  sessionManager.saveSession(session.getId(), session);
     }
 }
