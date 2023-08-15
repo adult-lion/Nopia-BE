@@ -5,16 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8cb2d5c-7ca2-4212-a511-e55398b82508" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/RedisConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/WebSocketSessionManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/WebSocketSessionManagerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/dto/SessionInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/SpringConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/SpringConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/component/TopicProperty.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/component/TopicProperty.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/config/RedisConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/config/RedisConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/config/SpringConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/config/SpringConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/config/WebSocketSessionManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/config/WebSocketSessionManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/handler/WebSocketChatHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/handler/WebSocketChatHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/service/ChatService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/service/ChatService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/chat.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/component/TopicProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/component/TopicProperty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/RedisConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/SpringConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/SpringConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/WebSocketSessionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/WebSocketSessionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/dto/RequestPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/dto/RequestPacket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/handler/WebSocketChatHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/handler/WebSocketChatHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/service/ChatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/service/ChatService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/chat.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,24 +59,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "spring.configuration.checksum": "e9809f29cde0be917f5eab3e61d707dc",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;e9809f29cde0be917f5eab3e61d707dc&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Hacker\Nopia-BE\src\main\resources\static" />
@@ -89,11 +103,23 @@
       <workItem from="1691924303084" duration="396000" />
       <workItem from="1691935464751" duration="3020000" />
       <workItem from="1692012762567" duration="4532000" />
-      <workItem from="1692026776534" duration="4296000" />
+      <workItem from="1692026776534" duration="11913000" />
+      <workItem from="1692076035031" duration="2289000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/WebSocketSessionManager.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

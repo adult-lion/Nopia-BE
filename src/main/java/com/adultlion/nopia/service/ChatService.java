@@ -58,7 +58,8 @@ public class ChatService {
         if (waitingUsers.get(0).size() >= chatProperty.getJuniorInEachRoom() &&
                 waitingUsers.get(1).size() >= chatProperty.getSeniorInEachRoom()) {
             String chatRoomId = UUID.randomUUID().toString();
-            int topicId = random.nextInt(topicProperty.getNumberOfTopics() + 1);
+            int topicId = random.nextInt(topicProperty.getNumberOfTopics()) + 1;    // 1~6까지의 랜덤수 생성
+
 
             ChatRoom room = ChatRoom.builder()
                     .roomId(chatRoomId)
@@ -107,6 +108,7 @@ public class ChatService {
                     .sender(requestPacket.getSender())
                     .build();
             chatRooms.get(roomId).sendMessage(message, this);
+            System.out.println(message);
         }
     }
 

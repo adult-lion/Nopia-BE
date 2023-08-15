@@ -1,6 +1,7 @@
 package com.adultlion.nopia.config;
 
 import com.adultlion.nopia.handler.WebSocketChatHandler;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class SpringConfig implements WebSocketConfigurer {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    @JsonIgnore
     private final WebSocketChatHandler webSocketChatHandler;
 
     @Override

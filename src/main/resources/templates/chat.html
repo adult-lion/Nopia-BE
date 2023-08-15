@@ -2,7 +2,7 @@
 <html lang="kr">
 <head>
     <meta charset="UTF-8">
-    <title>Pella</title>
+    <title>Nopia</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/index.css"/>
     <script>
@@ -32,7 +32,15 @@
 
         function onSocketMessage(e) {
             let message = JSON.parse(e.data);
-            console.log("이것은 Handler:"+message);
+
+            window.addEventListener('beforeunload',function (){
+                console.log("새로고침 발생!!");
+                websocket.send(JSON.stringify({
+                    message: "refresh"
+                }
+                ));
+            })
+
             if (message.type == "DATA") {
                 sessionStorage.setItem("session_id", message.sender);
                 let messageElement = document.createElement("div");
