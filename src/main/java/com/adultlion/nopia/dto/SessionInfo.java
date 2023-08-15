@@ -15,7 +15,7 @@ public class SessionInfo {
             return;
         }
 
-        System.out.println("SessionInfo 세션 아이디: " + session.getId());
+        System.out.println("SessionInfo의 session: " + session);
         this.id = session.getId();
         }
 }

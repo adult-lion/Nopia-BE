@@ -2,6 +2,7 @@ package com.adultlion.nopia.handler;
 
 import com.adultlion.nopia.config.WebSocketSessionManager;
 import com.adultlion.nopia.dto.RequestPacket;
+import com.adultlion.nopia.dto.SessionInfo;
 import com.adultlion.nopia.service.ChatService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +33,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler implements Serial
         if("refresh".equals(requestPacket.getMessage())){
             System.out.println("Message.getPayload: "+message.getPayload());
             if(isRefreshNeeded(session)){
-                System.out.println("새로고침 감지 및 RefreshNeeded 호출됨");
+                System.out.println("새로고침 감지 세션 id: "+session.getId());
                 restoreSession(session);
             }
         }
@@ -42,12 +43,16 @@ public class WebSocketChatHandler extends TextWebSocketHandler implements Serial
                 // 사용자 대기방 참여
                 service.join(session, requestPacket);
             } else if (requestPacket.getType() == RequestPacket.MessageType.ENTER) {
-                // 사용자 세션 저장
-                sessionManager.saveSession(session.getId(),session);
                 // 사용자 채팅방 참여
                 service.enter(session, requestPacket);
 
             } else if (requestPacket.getType() == RequestPacket.MessageType.TALK) {
+                System.out.println("RequestPacket의 sender: "+ requestPacket.getSender());
+                // 사용자 세션 저장
+                if(sessionManager.getSession(requestPacket.getSender()) == null){
+                    System.out.println("세션 확인 및 정보 저장 함수 호출");
+                    sessionManager.saveSession(requestPacket.getSender(),session);
+                }
                 // 사용자 간 대화
                 service.talk(requestPacket);
             }
@@ -74,17 +79,19 @@ public class WebSocketChatHandler extends TextWebSocketHandler implements Serial
     // 세션 복원 로직 수행 메서드
     private void restoreSession(WebSocketSession session){
         // Redis에서 세션 정보를 가져와 WebSocket 연결 재설정
-        WebSocketSession savedSession = (WebSocketSession) sessionManager.getSession(session.getId());
-        if(savedSession!=null && savedSession.isOpen()){
-            try {
-                WebSocketSession restoredSession = savedSession;
-                String message = "Welcome back! Your session has been restored.";
-                TextMessage textMessage = new TextMessage(message);
-                restoredSession.sendMessage(textMessage);
-            } catch (IOException e) {
-                System.out.println("에긍 아무래도 문제가 있네유");
-                e.printStackTrace();
-            }
+        SessionInfo savedSession =  sessionManager.getSession(session.getId());
+        if(savedSession!=null && session.isOpen()){
+            System.out.println("resotreSession이 호출됐어유: 매개변수 session Id: "+session.getId());
+            System.out.println("savedSession의 Id: "+savedSession.getId());
+//            try {
+//                WebSocketSession restoredSession = savedSession;
+//                String message = "Welcome back! Your session has been restored.";
+//                TextMessage textMessage = new TextMessage(message);
+//                restoredSession.sendMessage(textMessage);
+//            } catch (IOException e) {
+//                System.out.println("에긍 아무래도 문제가 있네유");
+//                e.printStackTrace();
+//            }
 
         }
     }

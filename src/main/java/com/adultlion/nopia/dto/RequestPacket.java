@@ -2,6 +2,7 @@ package com.adultlion.nopia.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.web.socket.WebSocketSession;
 
 @Data
 @Builder
