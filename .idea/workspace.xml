@@ -11,16 +11,12 @@
       <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/config/WebSocketSessionManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/config/WebSocketSessionManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/dto/SessionInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/dto/SessionInfo.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/handler/WebSocketChatHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/handler/WebSocketChatHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/service/ChatService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/adultlion/nopia/service/ChatService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/WebSocketSessionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/WebSocketSessionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/dto/ChatRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/dto/ChatRoom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/dto/SessionInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/dto/SessionInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/handler/WebSocketChatHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/handler/WebSocketChatHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/service/ChatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/adultlion/nopia/service/ChatService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/chat.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -117,19 +113,14 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/adultlion/nopia/handler/WebSocketChatHandler.java</url>
-          <line>50</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/adultlion/nopia/config/WebSocketSessionManager.java</url>
           <line>31</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/adultlion/nopia/handler/WebSocketChatHandler.java</url>
-          <line>32</line>
-          <option name="timeStamp" value="6" />
+          <line>85</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

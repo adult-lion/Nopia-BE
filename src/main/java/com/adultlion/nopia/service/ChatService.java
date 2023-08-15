@@ -7,6 +7,7 @@ import com.adultlion.nopia.dto.RequestPacket;
 import com.adultlion.nopia.dto.ResponsePacket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
@@ -19,6 +20,7 @@ import java.util.*;
 @Slf4j
 @AllArgsConstructor
 @Service
+@Getter
 public class ChatService {
     private final ChatProperty chatProperty; // 채팅 프로퍼티를 가져온 클래스
     private final TopicProperty topicProperty; // 토픽 프로퍼티를 가져온 클래스

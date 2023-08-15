@@ -34,7 +34,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler implements Serial
             System.out.println("Message.getPayload: "+message.getPayload());
             if(isRefreshNeeded(session)){
                 System.out.println("새로고침 감지 세션 id: "+session.getId());
-                restoreSession(session);
+                restoreSession(session,requestPacket);
             }
         }
         else {
@@ -44,6 +44,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler implements Serial
                 service.join(session, requestPacket);
             } else if (requestPacket.getType() == RequestPacket.MessageType.ENTER) {
                 // 사용자 채팅방 참여
+                System.out.println("ETNER 패킷: "+ requestPacket);
                 service.enter(session, requestPacket);
 
             } else if (requestPacket.getType() == RequestPacket.MessageType.TALK) {
@@ -74,12 +75,18 @@ public class WebSocketChatHandler extends TextWebSocketHandler implements Serial
     }
 
     // 세션 복원 로직 수행 메서드
-    private void restoreSession(WebSocketSession session){
+    private void restoreSession(WebSocketSession session, RequestPacket requestPacket){
         // Redis에서 세션 정보를 가져와 WebSocket 연결 재설정
         Object savedSession = sessionManager.getSession(session.getId());   // 기존 세션 가져오기
         if(savedSession!=null){
                 String message = "Welcome back! Your session has been restored.";
                 System.out.println(message);
+            int topicId = requestPacket.getTopicId(); // 토픽 ID
+            String roomId = requestPacket.getRoomId(); // 채팅방 ID
+            if (service.getChatRooms().containsKey(roomId)) { // 토픽, 채팅방 ID가 모두 있는 경우 해당 사용자 세션을 채팅방에 추가
+                System.out.println("이게 실행 돼야 해");
+                service.getChatRooms().get(roomId).addSession(session, service, service.getTopicProperty().getTopic(topicId).getTopic());
+            }
         }
     }
 }

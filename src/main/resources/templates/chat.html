@@ -26,6 +26,9 @@
         }
 
         function onSocketClose(e) {
+            setTimeout(()=>{
+                console.log("Trying to reconnect. . .");
+            })
             alert("서버와 통신을 할 수 없습니다. 처음부터 다시 시도해 주세요.");
             window.location.href = "/";
         }
@@ -40,15 +43,13 @@
                 if (!isRefreshing) {
                     isRefreshing = true;
                     websocket.send(JSON.stringify({
-                            message: "refresh"
+                        type: "ENTER",
+                        roomId: roomId,
+                        topicId: topicId,
+                        message: "refresh"
                         }
                     ));
                 }
-                websocket.send(JSON.stringify({
-                    type: "ENTER",
-                    roomId: roomId,
-                    topicId: topicId
-                }));
             });
 
             if (message.type == "DATA") {
