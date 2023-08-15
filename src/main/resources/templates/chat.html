@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="/css/index.css"/>
     <script>
         let roomId = sessionStorage.getItem("room_id");
-        let topicId = sessionStorage.getItem("topic_id");
 
         window.onload = function() {
             websocket = new WebSocket("ws://" + window.location.host + "/ws");
@@ -21,7 +20,7 @@
             websocket.send(JSON.stringify({
                 type: "ENTER",
                 roomId: roomId,
-                topicId: topicId
+                senderId: sessionStorage.getItem("session_id")
             }));
         }
 
@@ -33,14 +32,18 @@
         function onSocketMessage(e) {
             let message = JSON.parse(e.data);
             console.log(message);
-            if (message.type == "DATA") {
-                sessionStorage.setItem("session_id", message.sender);
+            if (message.type == "NOTICE") {
+                // 서버에서 랜덤 세션 id와 닉네임을 전송받으면 저장함. (서버에서는 처음에만 세션 id를 전송함)
+                if (message.senderId && message.senderNickname) {
+                    sessionStorage.setItem("session_id", message.senderId);
+                    sessionStorage.setItem("session_nickname", message.senderNickname);
+                }
                 let messageElement = document.createElement("div");
                 messageElement.className = "message-alert";
                 messageElement.innerHTML = "<span>" + message.message + "</span>";
                 document.getElementsByClassName("message-container")[0].appendChild(messageElement);
             } else if (message.type == "TALK") {
-                if (message.sender == sessionStorage.getItem("session_id")) { // my message returned
+                if (message.senderId == sessionStorage.getItem("session_id")) { // my message returned
                     let messageElement = document.createElement("div");
                     messageElement.className = "message-to";
                     messageElement.innerHTML = "<span>" + message.message + "</span>";
@@ -51,21 +54,31 @@
                     messageElement.innerHTML = "<span>" + message.message + "</span>";
                     document.getElementsByClassName("message-container")[0].appendChild(messageElement);
                 }
+            } else if (message.type == "VOTE") {
+                let messageElement = document.createElement("div");
+                messageElement.className = "message-alert";
+                messageElement.innerHTML = "<span>투표가 시작되었습니다.</span>";
+                document.getElementsByClassName("message-container")[0].appendChild(messageElement);
+            } else if (message.type == "RESULT") {
+                let messageElement = document.createElement("div");
+                messageElement.className = "message-alert";
+                messageElement.innerHTML = "<span>" + message.message + "</span>";
+                document.getElementsByClassName("message-container")[0].appendChild(messageElement);
             }
         }
 
         function doSend() {
             let userText = document.getElementsByClassName("sending-text")[0].value;
-            if (userText == "")
+            if (userText === "")
                 return
 
             document.getElementsByClassName("sending-text")[0].value = "";
 
             websocket.send(JSON.stringify({
                 type: "TALK",
-                sender: sessionStorage.getItem("session_id"),
+                senderId: sessionStorage.getItem("session_id"),
+                senderNickname: sessionStorage.getItem("session_nickname"),
                 roomId: roomId,
-                topicId: topicId,
                 message: userText
             }));
         }

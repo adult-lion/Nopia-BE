@@ -13,9 +13,10 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class SpringConfig implements WebSocketConfigurer {
     private final WebSocketChatHandler webSocketChatHandler;
 
+    // 웹소켓 핸들러를 스프링에 등록
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        // '/ws' 하의 모든 url을 담당할 핸들러 등록
+        // 사용자가 요청한 주소가 `/ws` 하위 주소를 갖는 경우 아래 핸들러로 연결함
         registry.addHandler(webSocketChatHandler, "/ws").setAllowedOrigins("*");
     }
 }
