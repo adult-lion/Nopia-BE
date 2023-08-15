@@ -36,7 +36,7 @@ public class ChatRoom {
                 .roomId(this.roomId)
                 .topicId(this.topicId)
                 .message("주제 - '" + topic + "'")
-                .sender(UUID.randomUUID().toString())
+                .sender(session.getId())
                 .build();
         service.sendMessage(session, message);
     }

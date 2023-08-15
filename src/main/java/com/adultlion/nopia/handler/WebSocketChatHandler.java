@@ -47,10 +47,8 @@ public class WebSocketChatHandler extends TextWebSocketHandler implements Serial
                 service.enter(session, requestPacket);
 
             } else if (requestPacket.getType() == RequestPacket.MessageType.TALK) {
-                System.out.println("RequestPacket의 sender: "+ requestPacket.getSender());
                 // 사용자 세션 저장
                 if(sessionManager.getSession(requestPacket.getSender()) == null){
-                    System.out.println("세션 확인 및 정보 저장 함수 호출");
                     sessionManager.saveSession(requestPacket.getSender(),session);
                 }
                 // 사용자 간 대화
@@ -72,27 +70,16 @@ public class WebSocketChatHandler extends TextWebSocketHandler implements Serial
 
     // 새로고침이 필요한지 여부를 판단하는 메서드
     private boolean isRefreshNeeded(WebSocketSession session){
-        System.out.println("isRefreshNeeded 호출:"+ session.getId());
         return sessionManager.isSessionExist(session.getId());
     }
 
     // 세션 복원 로직 수행 메서드
     private void restoreSession(WebSocketSession session){
         // Redis에서 세션 정보를 가져와 WebSocket 연결 재설정
-        SessionInfo savedSession =  sessionManager.getSession(session.getId());
-        if(savedSession!=null && session.isOpen()){
-            System.out.println("resotreSession이 호출됐어유: 매개변수 session Id: "+session.getId());
-            System.out.println("savedSession의 Id: "+savedSession.getId());
-//            try {
-//                WebSocketSession restoredSession = savedSession;
-//                String message = "Welcome back! Your session has been restored.";
-//                TextMessage textMessage = new TextMessage(message);
-//                restoredSession.sendMessage(textMessage);
-//            } catch (IOException e) {
-//                System.out.println("에긍 아무래도 문제가 있네유");
-//                e.printStackTrace();
-//            }
-
+        Object savedSession = sessionManager.getSession(session.getId());   // 기존 세션 가져오기
+        if(savedSession!=null){
+                String message = "Welcome back! Your session has been restored.";
+                System.out.println(message);
         }
     }
 }

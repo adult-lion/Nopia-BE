@@ -33,13 +33,23 @@
         function onSocketMessage(e) {
             let message = JSON.parse(e.data);
 
-            window.addEventListener('beforeunload',function (){
+            let isRefreshing = false;
+
+            window.addEventListener('beforeunload', function() {
                 console.log("새로고침 발생!!");
-                websocket.send(JSON.stringify({
-                    message: "refresh"
+                if (!isRefreshing) {
+                    isRefreshing = true;
+                    websocket.send(JSON.stringify({
+                            message: "refresh"
+                        }
+                    ));
                 }
-                ));
-            })
+                websocket.send(JSON.stringify({
+                    type: "ENTER",
+                    roomId: roomId,
+                    topicId: topicId
+                }));
+            });
 
             if (message.type == "DATA") {
                 sessionStorage.setItem("session_id", message.sender);

@@ -7,7 +7,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.socket.WebSocketSession;
 
-import javax.websocket.Session;
 import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -20,31 +19,27 @@ public class WebSocketSessionManager {
     @Autowired
     private ObjectMapper objectMapper;
     private ValueOperations<String, Object> valueOps;
+    private SessionInfo sessionInfo;
 
     public WebSocketSessionManager(RedisTemplate<String, Object> redisTemplate)
     {
         this.redisTemplate = redisTemplate;
+        this.sessionInfo = new SessionInfo();
     }
 
     public void saveSession(String sessionId, WebSocketSession session) {
         // Implement code to save session to Redis
-        SessionInfo sessionInfo = new SessionInfo(session);
+        sessionInfo.setId(sessionId);
         valueOps = redisTemplate.opsForValue();
-        System.out.println("saveSession: "+ sessionInfo);
         valueOps.set(sessionId, sessionInfo,30, TimeUnit.MINUTES);  // session을 30분동안 유지
     }
 
-    public SessionInfo getSession(String sessionId) {
+    public Object getSession(String sessionId) {
         Object sessionObject = valueOps ==null?null:valueOps.get(sessionId);
-        System.out.println("sessionObject: "+sessionObject);
-
         if (sessionObject instanceof LinkedHashMap) {
-            System.out.println("getSession의 LinkedHashMap 조건문: "+sessionObject);
-            LinkedHashMap<String, Object> sessionMap = (LinkedHashMap<String, Object>) sessionObject;
-            System.out.println(valueOps.get(sessionMap.values().iterator().next())); // 첫번째 값 가져오기);
-            return (SessionInfo) valueOps.get(sessionMap.values().iterator().next());
+            return valueOps.get(sessionId);
         }
-        return (SessionInfo) sessionObject;
+        return sessionObject;
     }
 
     public void updateSession(String sessionId, WebSocketSession session) {

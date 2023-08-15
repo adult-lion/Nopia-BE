@@ -2,9 +2,11 @@ package com.adultlion.nopia.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.socket.WebSocketSession;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class SessionInfo {
     private String id;
