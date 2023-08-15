@@ -32,8 +32,8 @@ public class ChatRoom {
     private Map<String, Integer> votes = new HashMap<>(); // 투표 집계가 될 변수
 
     // 채팅방 내의 유저 데이터를 담당
-    private Map<String, WebSocketSession> sessions = new HashMap<>(); // 채팅방 내의 사용자 세션
-    private Map<String, String> nicknames = new HashMap<>(); // 채팅방 내의 사용자 닉네임
+    private Map<String, WebSocketSession> sessions = new LinkedHashMap<>(); // 채팅방 내의 사용자 세션
+    private Map<String, String> nicknames = new LinkedHashMap<>(); // 채팅방 내의 사용자 닉네임
 
     // 유틸리티
     private final Random random = new Random(); // 랜덤 주제를 뽑기위한 랜덤 클래스
@@ -46,26 +46,41 @@ public class ChatRoom {
         · 그 후 추가된 세션에게 생성된 세션 id와 닉네임을 반환하여 클라이언트 단에서 저장할 수 있도록 함.
         · 사용자가 추가된 후 방 최대 인원(totalNumberOfUser)과 현재 들어온 사용자 수가 같으면 게임 시작.
      */
-    public void addSession(WebSocketSession session, int totalNumberOfUser) {
-        String sessionId = session.getId();
+    public void addSession(WebSocketSession session, int totalNumberOfUser, RequestPacket requestPacket) {
+        System.out.println(requestPacket);
+        String sessionId = requestPacket.getSenderId();
 
-        sessions.put(sessionId, session);
-        nicknames.put(sessionId, "익명" + sessions.size());
+        if(sessions.get(sessionId)!=null && !sessions.get(sessionId).isOpen()){
+            sessions.put(sessionId,session);
 
-        // 세션 추가와 함께 현재 세션의 사용자에게 채팅방 ID 데이터 전달
-        ResponsePacket message = ResponsePacket.builder()
-                .type(ResponsePacket.MessageType.NOTICE)
-                .senderId(sessionId) // 사용자의 세션 id와 닉네임을 반환하여 사용자가 저장할 수 있도록 함
-                .senderNickname(nicknames.get(sessionId))
-                .message(nicknames.get(sessionId) + "님이 채팅방에 입장하였습니다.")
-                .build();
-        sendMessage(session, message);
+            ResponsePacket message = ResponsePacket.builder()
+                    .type(ResponsePacket.MessageType.NOTICE)
+                    .senderId(sessionId) // 사용자의 세션 id와 닉네임을 반환하여 사용자가 저장할 수 있도록 함
+                    .senderNickname(nicknames.get(sessionId))
+                    .message(nicknames.get(sessionId) + "님이 채팅방에 재입장하였습니다.")
+                    .build();
+            sendMessage(session, message);
+        }
+        else {
+            if(sessionId==null){sessionId = session.getId();}
+            sessions.put(sessionId, session);
+            nicknames.put(sessionId, "익명" + sessions.size());
 
-        // 만약 모든 사용자가 들어오면 게임 시작
-        if (sessions.size() == totalNumberOfUser)
-            startGame();
+            // 세션 추가와 함께 현재 세션의 사용자에게 채팅방 ID 데이터 전달
+            ResponsePacket message = ResponsePacket.builder()
+                    .type(ResponsePacket.MessageType.NOTICE)
+                    .senderId(sessionId) // 사용자의 세션 id와 닉네임을 반환하여 사용자가 저장할 수 있도록 함
+                    .senderNickname(nicknames.get(sessionId))
+                    .message(nicknames.get(sessionId) + "님이 채팅방에 입장하였습니다.")
+                    .build();
+            sendMessage(session, message);
+
+            // 만약 모든 사용자가 들어오면 게임 시작
+            if (sessions.size() == totalNumberOfUser)
+                startGame();
+        }
+
     }
-
 
     // 채팅방 게임 시작
     /*
