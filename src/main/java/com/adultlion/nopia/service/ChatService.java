@@ -87,7 +87,7 @@ public class ChatService {
         String roomId = requestPacket.getRoomId(); // 채팅방 ID
 
         if (chatRooms.containsKey(roomId)) { // 채팅방 ID가 존재하는 경우 해당 사용자 세션을 채팅방에 추가
-            chatRooms.get(roomId).addSession(session, chatProperty.getTotalNumberOfUserInEachRoom());
+            chatRooms.get(roomId).addSession(session, chatProperty.getTotalNumberOfUserInEachRoom(),requestPacket);
         }
     }
 
