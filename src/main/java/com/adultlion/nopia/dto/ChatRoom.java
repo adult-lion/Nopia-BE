@@ -31,6 +31,7 @@ public class ChatRoom {
     private int topicId = 0; // 토픽 ID
     private int gamePhase = 0; // 0 - 사용자 입장, 1 - 첫 번째 날, 2 - 두 번째 날 ...
     private Map<String, Integer> votes = new HashMap<>(); // 투표 집계가 될 변수
+    private int votesCounter = 0; // 현재 집계된 투표 수
 
     // 채팅방 내의 유저 데이터를 담당
     private Map<String, WebSocketSession> sessions = new LinkedHashMap<>(); // 채팅방 내의 사용자 세션
@@ -168,9 +169,10 @@ public class ChatRoom {
         // 투표 데이터 저장
         int vote = votes.getOrDefault(requestPacket.getMessage(), 0); // 이전에 투표가 진행된 사용자라면 그대로 값을 가져오고, 그렇지 않으면(새로 지목된 사용자) 0의 값을 가져옴
         votes.put(requestPacket.getMessage(), vote + 1); // 데이터 변경
+        votesCounter++;
 
         // 투표 집계 완료
-        if (votes.size() == sessions.size()) {
+        if (votesCounter >= nicknames.size()) {
             // 최다 득표 유저 계산
             String resultUserNickname = ""; // 최다 득표 유저의 닉네임이 저장됨
             int resultUserVote = 0; // 최다 득표 유저의 득표수가 저장됨
@@ -203,5 +205,17 @@ public class ChatRoom {
     // 채팅방 내의 모든 세션에게 메시지 전송
     public <T> void broadcast(T message) {
         sessions.values().forEach(session -> sendMessage(session, message));
+    }
+
+    // 채팅방의 모든 세션 종료
+    public void closeSessions() {
+        sessions.forEach((key, session) -> {
+            try {
+                if (session.isOpen()) // 세션이 열려있을 때만 세션 종료
+                    session.close();
+            } catch (IOException e) {
+                log.error(e.toString());
+            }
+        });
     }
 }

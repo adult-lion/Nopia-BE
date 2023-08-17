@@ -121,34 +121,27 @@ public class ChatService {
     }
 
     // 1분 마다 실행되는 세션 체크 함수 (1000ms = 1s)
-    @Scheduled(fixedDelay = 100000)
+    // 1분 마다 전체 채팅방을 순회하며 해당 채팅방의 인원 중 한명의 인원이라도 세션을 종료했다면 게임을 무효로 판단하고 해당 게임방 종료 및 제거
+    @Scheduled(fixedDelay = 60000)
     public void sessionCheck(){
         // chatRooms맵 순회하기 위한 Iterator
         Iterator<ChatRoom> iterator = chatRooms.values().iterator();
 
         // 다음 요소가 있는 경우 진행
-        while(iterator.hasNext()){
+        while (iterator.hasNext()){
             // checkRoom에 탐색할 채팅방 저장
             // 해당 채팅방의 유저 세션 순회
-            ChatRoom checkRoom = iterator.next();
-            checkRoom.getSessions()
-                    .forEach((key,session)->{
-                        // 세션이 하나라도 닫힌 경우
-                        // 해당 채팅방의 모든 세션 닫고, chatRooms에서 해당 채팅방 삭제
-                        if(!session.isOpen()) {
-                            checkRoom.getSessions()     
-                                    .forEach((key2, eachSession)->{
-                                        try {
-                                            eachSession.close();
-                                        } catch (IOException e) {
-                                            throw new RuntimeException(e);
-                                        }
-                                    });
-                            chatRooms.values().remove(checkRoom);
-                        }
-                    });
-            }
+            ChatRoom chatRoom = iterator.next();
+            chatRoom.getSessions().forEach((chatRoomKey, session) -> {
+                // 세션이 하나라도 닫힌 경우
+                // 해당 채팅방의 모든 세션 닫고, chatRooms에서 해당 채팅방 삭제
+                if (!session.isOpen()) {
+                    chatRoom.closeSessions();
+                    chatRooms.values().remove(chatRoom);
+                }
+            });
         }
+    }
 
     // 대기방 내의 특정 세션에게 메시지 전달
     public <T> void sendMessage(WebSocketSession session, T message) {

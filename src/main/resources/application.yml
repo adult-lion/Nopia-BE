@@ -8,17 +8,19 @@ chat:
   second-each-game-phase: 10
 
 topic:
-  number-of-topics: 6
+  number-of-topics: 7
   topics:
     - id: 0
-      topic: 상속세를 없애야 하는가?
+      topic: 키오스크를 사용하는 방법 (이어말하기)
     - id: 1
-      topic: 대중교통의 노약자석을 늘려야 하는가?
+      topic: KTX표 예매하는 방법 (이어말하기)
     - id: 2
-      topic: 자살은 정당화 할 수 있는가?
+      topic: 자신이 쓰고 있는 AI 스피커에 대한 장점 말하기
     - id: 3
-      topic: 청소년에게 감형 처벌을 해야하는가?
+      topic: 은행 ATM기에서 돈을 입금/출금하는 방법
     - id: 4
-      topic: 인간은 태어날 때부터 선한가?
+      topic: 카카오택시 사용하는 방법 / 장단점
     - id: 5
-      topic: 사형제도를 폐지해야 하는가?
+      topic: 배달의 민족을 사용하면서 주소를 잘못 지정해서 오배송이 났던 경험
+    - id: 6
+      topic: 다양한 모바일 금융서비스 앱의 장단점 비교와 사용자 경험에 따른 추천 사례
