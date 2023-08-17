@@ -47,22 +47,11 @@ public class ChatRoom {
         · 사용자가 추가된 후 방 최대 인원(totalNumberOfUser)과 현재 들어온 사용자 수가 같으면 게임 시작.
      */
     public void addSession(WebSocketSession session, int totalNumberOfUser, RequestPacket requestPacket) {
-        System.out.println(requestPacket);
-        String sessionId = requestPacket.getSenderId();
+        String sessionId = requestPacket.getSenderId(); // 새로고침한 사용자일 경우 senderId를 전송함
 
-        if(sessions.get(sessionId)!=null && !sessions.get(sessionId).isOpen()){
-            sessions.put(sessionId,session);
+        if (!sessions.containsKey(sessionId)) { // 처음 접속한 사용자인 경우
+            sessionId = session.getId();
 
-            ResponsePacket message = ResponsePacket.builder()
-                    .type(ResponsePacket.MessageType.NOTICE)
-                    .senderId(sessionId) // 사용자의 세션 id와 닉네임을 반환하여 사용자가 저장할 수 있도록 함
-                    .senderNickname(nicknames.get(sessionId))
-                    .message(nicknames.get(sessionId) + "님이 채팅방에 재입장하였습니다.")
-                    .build();
-            sendMessage(session, message);
-        }
-        else {
-            if(sessionId==null){sessionId = session.getId();}
             sessions.put(sessionId, session);
             nicknames.put(sessionId, "익명" + sessions.size());
 
@@ -78,8 +67,23 @@ public class ChatRoom {
             // 만약 모든 사용자가 들어오면 게임 시작
             if (sessions.size() == totalNumberOfUser)
                 startGame();
-        }
+        } else { // 재접속한 사용자인 경우
+            // 신규 세션 추가
+            sessions.put(session.getId(), session);
+            nicknames.put(session.getId(), nicknames.get(sessionId));
 
+            // 기존 세션 삭제
+            sessions.remove(sessionId);
+            nicknames.remove(sessionId);
+
+            ResponsePacket message = ResponsePacket.builder()
+                    .type(ResponsePacket.MessageType.NOTICE)
+                    .senderId(session.getId()) // 사용자의 세션 id와 닉네임을 반환하여 사용자가 저장할 수 있도록 함
+                    .senderNickname(nicknames.get(session.getId()))
+                    .message(nicknames.get(session.getId()) + "님이 채팅방에 재입장하였습니다.")
+                    .build();
+            sendMessage(session, message);
+        }
     }
 
     // 채팅방 게임 시작

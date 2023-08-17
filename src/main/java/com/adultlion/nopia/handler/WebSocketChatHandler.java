@@ -29,6 +29,8 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         // mapper 객체를 이용하여 들어온 패킷을 RequestPacket 클래스로 변환
         RequestPacket requestPacket = mapper.readValue(message.getPayload(), RequestPacket.class);
 
+        System.out.println(requestPacket);
+
         // 패킷의 타입에 따라 서비스의 여러 기능들로 분기
         if (requestPacket.getType() == RequestPacket.MessageType.JOIN) { // 사용자 대기방 참여
             service.join(session, requestPacket);
@@ -38,12 +40,14 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
             service.talk(requestPacket);
         } else if (requestPacket.getType() == RequestPacket.MessageType.VOTE) { // 사용자 투표 데이터
             service.vote(requestPacket);
+        } else if (requestPacket.getType() == RequestPacket.MessageType.PING) { // 클라이언트 PING 데이터
+            service.pingpong(session, requestPacket);
         }
     }
 
     // 클라이언트와 서버 간 세션이 종료되면 실행됨 (만약 클라이언트가 브라우저를 종료하거나 탭을 닫거나 세션을 종료하는 경우)
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) {
-        // 세션이 종료되면 실행
+//        service.onSessionClosed(session);
     }
 }

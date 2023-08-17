@@ -111,6 +111,15 @@ public class ChatService {
         }
     }
 
+    // 세션 끊김 방지
+    // 클라이언트 쪽에서 PING을 보내면 서버에서 PONG을 보냄
+    public void pingpong(WebSocketSession session, RequestPacket requestPacket) {
+        ResponsePacket message = ResponsePacket.builder()
+                .type(ResponsePacket.MessageType.PONG).build();
+
+        sendMessage(session, message);
+    }
+
     // 대기방 내의 특정 세션에게 메시지 전달
     public <T> void sendMessage(WebSocketSession session, T message) {
         try {

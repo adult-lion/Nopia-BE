@@ -35,3 +35,6 @@ tasks.named('test') {
 }
 
 apply plugin : 'war'
+war {
+	archiveName 'api.war'
+}
