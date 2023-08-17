@@ -9,11 +9,13 @@ import com.adultlion.nopia.dto.ResponsePacket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import javax.annotation.PostConstruct;
+import javax.swing.text.html.parser.Entity;
 import java.io.IOException;
 import java.util.*;
 
@@ -31,7 +33,6 @@ public class ChatService {
     // 대기방 및 채팅방 관련
     private ArrayList<LinkedList<WebSocketSession>> waitingUsers; // 대기유저가 LinkedList인 이유는 FIFO 순서성을 가져야 하기 때문. ArrayList에서 첫 번째는 주니어 대기방, 두 번째는 시니어 대기방
     private Map<String, ChatRoom> chatRooms; // 실제 유저들이 대화를 나눌 채팅방
-
 
     @PostConstruct // 클래스 내에서 의존성 주입을 마치면 자동으로 아래 메서드가 실행됨
     public void init() {
@@ -85,7 +86,6 @@ public class ChatService {
     // 채팅방 id를 통해 만약 해당하는 채팅방이 있는 경우 if문 하위 코드 실행
     public void enter(WebSocketSession session, RequestPacket requestPacket) {
         String roomId = requestPacket.getRoomId(); // 채팅방 ID
-
         if (chatRooms.containsKey(roomId)) { // 채팅방 ID가 존재하는 경우 해당 사용자 세션을 채팅방에 추가
             chatRooms.get(roomId).addSession(session, chatProperty.getTotalNumberOfUserInEachRoom(),requestPacket);
         }
@@ -119,6 +119,36 @@ public class ChatService {
 
         sendMessage(session, message);
     }
+
+    // 1분 마다 실행되는 세션 체크 함수 (1000ms = 1s)
+    @Scheduled(fixedDelay = 100000)
+    public void sessionCheck(){
+        // chatRooms맵 순회하기 위한 Iterator
+        Iterator<ChatRoom> iterator = chatRooms.values().iterator();
+
+        // 다음 요소가 있는 경우 진행
+        while(iterator.hasNext()){
+            // checkRoom에 탐색할 채팅방 저장
+            // 해당 채팅방의 유저 세션 순회
+            ChatRoom checkRoom = iterator.next();
+            checkRoom.getSessions()
+                    .forEach((key,session)->{
+                        // 세션이 하나라도 닫힌 경우
+                        // 해당 채팅방의 모든 세션 닫고, chatRooms에서 해당 채팅방 삭제
+                        if(!session.isOpen()) {
+                            checkRoom.getSessions()     
+                                    .forEach((key2, eachSession)->{
+                                        try {
+                                            eachSession.close();
+                                        } catch (IOException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    });
+                            chatRooms.values().remove(checkRoom);
+                        }
+                    });
+            }
+        }
 
     // 대기방 내의 특정 세션에게 메시지 전달
     public <T> void sendMessage(WebSocketSession session, T message) {

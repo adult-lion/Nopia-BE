@@ -28,11 +28,10 @@
 
         function onSocketMessage(e) {
             let message = JSON.parse(e.data);
-            console.log(message);
             if (message.type == 'ENTER') {
                 sessionStorage.setItem("room_id", message.roomId);
-                sessionStorage.setItem("topic_id", message.topicId);
-                window.location.href = "/chat"
+                sessionStorage.setItem("session_id", "");
+                window.location.href = "/chat";
             }
         }
 
