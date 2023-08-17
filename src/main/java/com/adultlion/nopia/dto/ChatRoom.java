@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnJava;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -114,6 +115,7 @@ public class ChatRoom {
 
         gamePhase = 1; // 첫 번째 날 시작
         scheduler.addSchedule(this, 10); // delay초 후 투표 진행 타이머 시작
+
     }
 
     // 다음 게임 스탭 시간이 되면 ChatRoomScheduler에서 실행됨

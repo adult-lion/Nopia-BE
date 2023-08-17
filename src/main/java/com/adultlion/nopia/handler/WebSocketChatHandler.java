@@ -48,6 +48,6 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
     // 클라이언트와 서버 간 세션이 종료되면 실행됨 (만약 클라이언트가 브라우저를 종료하거나 탭을 닫거나 세션을 종료하는 경우)
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) {
-//        service.onSessionClosed(session);
+        //        service.onSessionClosed(session);
     }
 }
