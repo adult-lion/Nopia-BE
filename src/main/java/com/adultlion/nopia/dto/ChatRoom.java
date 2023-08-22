@@ -2,15 +2,10 @@ package com.adultlion.nopia.dto;
 
 import com.adultlion.nopia.component.ChatRoomScheduler;
 import com.adultlion.nopia.component.ChatTopicProperty;
-import com.adultlion.nopia.service.ChatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnJava;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -32,6 +27,7 @@ public class ChatRoom {
     private int gamePhase = 0; // 0 - 사용자 입장, 1 - 첫 번째 날, 2 - 두 번째 날 ...
     private Map<String, Integer> votes = new HashMap<>(); // 투표 집계가 될 변수
     private int votesCounter = 0; // 현재 집계된 투표 수
+    private String mafiaSessionId = ""; // 마피아의 세션 id
 
     // 채팅방 내의 유저 데이터를 담당
     private Map<String, WebSocketSession> sessions = new LinkedHashMap<>(); // 채팅방 내의 사용자 세션
@@ -57,6 +53,10 @@ public class ChatRoom {
             sessions.put(sessionId, session);
             nicknames.put(sessionId, "익명" + sessions.size());
 
+            // 현재 입장한 유저가 마피아인 경우 해당 세션 id를 저장
+            if (requestPacket.getMessage().equals("1"))
+                mafiaSessionId = sessionId;
+
             // 세션 추가와 함께 현재 세션의 사용자에게 채팅방 ID 데이터 전달
             ResponsePacket message = ResponsePacket.builder()
                     .type(ResponsePacket.MessageType.NOTICE)
@@ -77,6 +77,10 @@ public class ChatRoom {
             // 기존 세션 삭제
             sessions.remove(sessionId);
             nicknames.remove(sessionId);
+
+            // 현재 입장한 유저가 마피아인 경우 해당 세션 id를 다시 저장
+            if (requestPacket.getMessage().equals("1"))
+                mafiaSessionId = session.getId();
 
             ResponsePacket message = ResponsePacket.builder()
                     .type(ResponsePacket.MessageType.NOTICE)
@@ -115,7 +119,7 @@ public class ChatRoom {
         broadcast(message);
 
         gamePhase = 1; // 첫 번째 날 시작
-        scheduler.addSchedule(this, 10); // delay초 후 투표 진행 타이머 시작
+        scheduler.addSchedule(this, 300); // delay초 후 투표 진행 타이머 시작
 
     }
 
@@ -186,14 +190,40 @@ public class ChatRoom {
             // 메시지 전달
             ResponsePacket message = ResponsePacket.builder()
                     .type(ResponsePacket.MessageType.RESULT)
-                    .message(resultUserNickname + "님 " + resultUserVote + "표")
+                    .message(String.format("최다 득표자 : %s님 (%s표), 마피아는 %s님 이었습니다.", resultUserNickname, resultUserVote, nicknames.get(mafiaSessionId)))
                     .build();
             broadcast(message);
         }
     }
 
+    // 모든 세션이 열려있는지 확인
+    // 모든 세션이 열려있다면 true, 하나라도 닫혀있다면 false 반환
+    public boolean checkAllSessionOpened() {
+        for (WebSocketSession session : sessions.values()) {
+            if (!session.isOpen()) { // 만약 한 사용자의 세션이 종료되었다면 모든 세션 연결 해제
+                closeAllSession();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 모든 세션 연결 해제
+    public void closeAllSession() {
+        for (WebSocketSession session : sessions.values()) {
+            if (session.isOpen()) { // 열린 세션만 닫음
+                try {
+                    session.close();
+                } catch (IOException e) {
+                    log.error(e.toString());
+                }
+            }
+        }
+    }
+
     // 특정 한 세션에게 메시지 전달
     public <T> void sendMessage(WebSocketSession session, T message) {
+        System.out.println(session.getId() + " <- " + message);
         try {
             if (session.isOpen()) // 세션이 열려 있을 경우에만 메시지를 전송함
                 session.sendMessage(new TextMessage(mapper.writeValueAsString(message))); // 메시지를 문자열 형식으로 변환하여 메시지 전송
@@ -204,17 +234,9 @@ public class ChatRoom {
 
     // 채팅방 내의 모든 세션에게 메시지 전송
     public <T> void broadcast(T message) {
-        sessions.values().forEach(session -> sendMessage(session, message));
-    }
-
-    // 채팅방의 모든 세션 종료
-    public void closeSessions() {
-        sessions.forEach((key, session) -> {
-            try {
-                if (session.isOpen()) // 세션이 열려있을 때만 세션 종료
-                    session.close();
-            } catch (IOException e) {
-                log.error(e.toString());
+        sessions.values().forEach(session -> {
+            synchronized (session) {
+                sendMessage(session, message);
             }
         });
     }

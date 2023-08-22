@@ -20,7 +20,8 @@
             websocket.send(JSON.stringify({
                 type: "ENTER",
                 roomId: roomId,
-                senderId: sessionStorage.getItem("session_id")
+                senderId: sessionStorage.getItem("session_id"),
+                message: parseInt(sessionStorage.getItem("age")) <= 20 ? "0" : "1"
             }));
         }
 

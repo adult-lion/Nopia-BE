@@ -3,7 +3,7 @@ server.servlet.encoding.force-response: true
 chat:
   max-number-of-rooms: 100000
   number-of-ages: 6
-  junior-in-each-room: 3
+  junior-in-each-room: 4
   senior-in-each-room: 1
   second-each-game-phase: 10
 
